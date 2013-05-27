@@ -12,6 +12,18 @@ function timeConverter(UNIX_timestamp) {
     return time;
  }
 
+function GetURLParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
 
 
 $(document).ready(function () {
@@ -22,13 +34,23 @@ $(document).ready(function () {
         $.each(app_list, function(app_id, infos) {
             $('#app-list').append('<li><a data-app-id="'+ app_id +'">'+ infos.manifest.name +'</a></li>');
         });
+        if (typeof GetURLParameter('app') === 'string') {
+            var app_id = GetURLParameter('app');
+            $('#app-list a[data-app-id="'+ app_id +'"]').toggleClass('active');
+            if ($('#app-list a.active').length > 0) {
+                var html = $('#template').html();
+                app_list[app_id].lastUpdate2 = timeConverter(app_list[app_id].lastUpdate);
+                $('#content').html(Mustache.to_html(html, app_list[app_id]));
+            }
+        }
         $("#app-list").on('click', "a:not('active')", function() {
-           $("#app-list a").removeClass('active');
-           $(this).toggleClass('active');
-           var app_id = $(this).attr('data-app-id');
-           var html = $('#template').html();
-           app_list[app_id].lastUpdate2 = timeConverter(app_list[app_id].lastUpdate);
-           $('#content').html(Mustache.to_html(html, app_list[app_id]));
+            $("#app-list a").removeClass('active');
+            $(this).toggleClass('active');
+            var app_id = $(this).attr('data-app-id');
+            window.history.pushState({foo: "bar"}, "YNH App | "+ app_list[app_id].name, "/?app="+ app_id);
+            var html = $('#template').html();
+            app_list[app_id].lastUpdate2 = timeConverter(app_list[app_id].lastUpdate);
+            $('#content').html(Mustache.to_html(html, app_list[app_id]));
         });
     });
 });
