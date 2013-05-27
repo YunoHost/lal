@@ -1,0 +1,5 @@
+sftp-config.json
+.*.swp
+.*.swo
+*~
+public/stylesheets/.sass-cache/*
