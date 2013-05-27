@@ -19,14 +19,18 @@ html, body {
     overflow-y: scroll;
     padding: 30px 15px 0;
     h1 {
-        line-height: 22px;
         margin: 0;
+        font-size: 15px;
         a {
-            padding: 0 0.3em;
+            padding: 4px 0.4em 0;
             border: 3px solid white;
             color: white;
-            font-size: 22px;
+            line-height: 23px;
             font-family: 'Source Code Pro';
+            font-weight: 900;
+            span {
+                font-size: 22px;
+            }
         }
     }
     .add-new {

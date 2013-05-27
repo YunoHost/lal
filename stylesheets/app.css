@@ -4683,14 +4683,17 @@ html, body {
   overflow-y: scroll;
   padding: 30px 15px 0; }
   .left-column h1 {
-    line-height: 22px;
-    margin: 0; }
+    margin: 0;
+    font-size: 15px; }
     .left-column h1 a {
-      padding: 0 0.3em;
+      padding: 4px 0.4em 0;
       border: 3px solid white;
       color: white;
-      font-size: 22px;
-      font-family: 'Source Code Pro'; }
+      line-height: 23px;
+      font-family: 'Source Code Pro';
+      font-weight: 900; }
+      .left-column h1 a span {
+        font-size: 22px; }
   .left-column .add-new {
     box-shadow: none;
     margin-top: 30px;
