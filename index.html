@@ -26,28 +26,83 @@
                 <a class="add-new green button normal-font strong"><span>+</span> New App Request</a>
             </div>
             <ul id="app-list">
-                <li><a>jappix_ynh</a></li>
-                <li><a>owncloud_ynh</a></li>
-                <li><a>caldav_sync_ynh</a></li>
-                <li><a class="active">roundcube_ynh</a></li>
-                <li><a>agendav_ynh</a></li>
-                <li><a>ttrss_ynh</a></li>
-                <li><a>yayaya_ynh</a></li>
-                <li><a>piwik_ynh</a></li>
-                <li><a>etherpad_lite_yayaya_ynh</a></li>
-                <li><a>roundcube_ynh</a></li>
             </ul>
         </div>
         <div class="right-column">
             <div class="right-column-container">
                 <div id="content">
-                    Yayaya
                 </div>
             </div>
         </div>
+
+        <div id="modal">
+        </div>
+
+        <!-- Ajax templates -->
+        <script id="home" type="text/template">
+            <h1>Welcome</h1>
+            <p>This is a list of validated Apps for YunoHost.</p>
+            <p>You can pick an App from the list beside to see more details, or if you are an App maintainer, you can fill the form of App request, and the development team will validate your App as soon as possible :)</p>
+        </script>
+
+        <script id="template" type="text/template">
+            <div class="row">
+                <div class="large-2 columns center">
+                    <div class="app-icon"><img src="http://dummyimage.com/48x48"></div>
+                </div>
+                <div class="large-7 columns">
+                    <h1>{{manifest.name}}</h1>
+                </div>
+                <div class="large-3 columns center" style="padding-top: 10px">
+                    <div class="btn-container"><a class="big green button normal-font strong" href="#">&darr; Install</a></div>
+                </div>
+            </div>
+            <br />
+            <div>
+                <strong>Name: </strong>{{manifest.name}} ({{manifest.yunohost.uid}})
+            </div>
+            <div>
+                <strong>Type: </strong>{{manifest.type}}
+            </div>
+            <div>
+                <strong>Version: </strong>{{manifest.version}}
+            </div>
+            <div>
+                <strong>Last update (UTC): </strong>{{lastUpdate2}}
+            </div>
+            <div>
+                <strong>Maintainer: </strong>{{manifest.developer.name}} [ <a href="{{manifest.developer.url}}">{{manifest.developer.url}}</a> ]
+            </div>
+            <div>
+                <strong>Description: </strong>{{manifest.description}}
+            </div>
+            <div class="spacer"></div>
+            <div>
+                <strong>Git URL: </strong><a href="{{git.url}}">{{git.url}}</a>
+            </div>
+            <div>
+                <strong>Branch: </strong>{{git.branch}}
+            </div>
+            <div>
+                <strong>Revision: </strong>{{git.revision}}
+            </div>
+            <div class="spacer"></div>
+            <strong>Dependencies: </strong> {{^manifest.dependencies}}None{{/manifest.dependencies}}
+            {{#manifest.dependencies}}
+                    <br />Debian :
+                    <ul style="list-style-type: square; padding-left: 20px;">
+                        {{#debian}}
+                            <li>{{.}}</li>
+                        {{/debian}}
+                    </ul>
+                </div>
+            {{/manifest.dependencies}}
+        </script>
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
