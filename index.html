@@ -19,11 +19,11 @@
         <div class="left-column">
             <div class="logo-container center">
                 <h1>
-                  <a class="brand"><span>YUNOHOST</span></a>
+                  <a class="brand" href="/"><span>YUNOHOST</span></a>
                 </h1>
             </div>
             <div class="btn-container center">
-                <a class="add-new green button normal-font strong"><span>+</span> New App Request</a>
+                <a id="new-request-button" class="add-new green button normal-font strong"><span>+</span> New App Request</a>
             </div>
             <ul id="app-list">
             </ul>
@@ -35,7 +35,9 @@
             </div>
         </div>
 
-        <div id="modal">
+        <div class="row modal-wrapper">
+            <div class="reveal-modal gridBlock stroked" id="modal">
+            </div>
         </div>
 
         <!-- Ajax templates -->
@@ -43,6 +45,55 @@
             <h1>Welcome</h1>
             <p>This is a list of validated Apps for YunoHost.</p>
             <p>You can pick an App from the list beside to see more details, or if you are an App maintainer, you can fill the form of App request, and the development team will validate your App as soon as possible :)</p>
+        </script>
+
+        <script id="new-request" type="text/template">
+            <h1>Send new request</h1>
+            <div class="row">
+                <form action="">
+                    <div class="large-12 columns">
+                        <div class="row">
+                            <label class="large-4 columns" for="request">Request type</label>
+                            <div class="large-8 columns" style="padding-top: 6px">
+                                <input type="radio" name="request" value="New App">  New App &nbsp;&nbsp;
+                                <input type="radio" name="request" value="App Update">  App Update
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="large-4 columns" for="appname">App Name</label>
+                            <input class="large-7 columns" type="text" name="appname" id="appname" placeholder="My Awesome App" required>
+                            <div class="large-1 columns"></div>
+                        </div>
+                        <div class="row">
+                            <label class="large-4 columns" for="url">Git repo</label>
+                            <input class="large-7 columns" type="text" name="url" id="url" placeholder="https://github.com/YunoHost/roundcubemail.git" required>
+                            <div class="large-1 columns"></div>
+                        </div>
+                        <div class="row">
+                            <label class="large-4 columns" for="branch">Branch</label>
+                            <input class="large-7 columns" type="text" name="branch" id="branch" placeholder="master" required>
+                            <div class="large-1 columns"></div>
+                        </div>
+                        <div class="row">
+                            <label class="large-4 columns" for="rev">Revision</label>
+                            <input class="large-7 columns" type="text" name="rev" id="rev" placeholder="92d93210b9" required>
+                            <div class="large-1 columns"></div>
+                        </div>
+                        <div class="row">
+                            <label class="large-4 columns" for="comment">Comment</label>
+                            <textarea class="large-7 columns" name="comment" id="comment" style="height: 160px;"></textarea>
+                            <div class="large-1 columns"></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="style: width: 100%;">
+                        <div class="btn-container center">
+                            <input type="submit" class="big green button normal-font strong send-request" style="margin: 20px 0 0" value="Send">
+                        </div>
+                    </div>
+                </form>
+            </div>
         </script>
 
         <script id="template" type="text/template">
@@ -102,6 +153,11 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="js/foundation.js"></script>
+        <script src="js/foundation.reveal.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
         <script src="js/main.js"></script>

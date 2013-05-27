@@ -25,7 +25,6 @@ function GetURLParameter(sParam) {
     }
 }
 
-
 $(document).ready(function () {
     $('#content').html($('#home').html());
     $.getJSON('list.json', function(app_list) {
@@ -52,5 +51,27 @@ $(document).ready(function () {
             app_list[app_id].lastUpdate2 = timeConverter(app_list[app_id].lastUpdate);
             $('#content').html(Mustache.to_html(html, app_list[app_id]));
         });
+
+        $("#new-request-button").click(function() {
+            $('#modal').html($('#new-request').html());
+            $('#modal').foundation('reveal', 'open');
+        });
+
+        $("#modal").on('click', ".send-request", function(event) {
+            event.preventDefault();
+            var request = escape($("#modal input[type='radio']:checked").val());
+            var appname =  escape($("#appname").val());
+            var url =  escape($("#url").val());
+            var branch = escape($("#branch").val());
+            var rev = escape($("#rev").val());
+            var comment = escape($('#comment').val());
+            var link = "mailto:app-request@yunohost.org"
+                     + "?subject=" + "[YNH "+ request +" Request] "+ appname
+                     + "&body= Repo URL: " + url + "%0D%0A Branch: "+ branch +"%0D%0A Revision: "+ rev +"%0D%0A%0D%0A Comment: %0D%0A"+ comment;
+
+            window.location.href = link;
+        });
+
+
     });
 });
