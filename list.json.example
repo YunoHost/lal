@@ -1,0 +1,54 @@
+{
+    "roundcube_ynh": {
+        "lastUpdate": 1361793656,
+        "git": {
+            "url": "https://github.com/Kloadut/roundcubemail",
+            "branch": "release-0.8-yunohost",
+            "revision": "04ff1b3a2281932a937e73064163017b9ec082db"
+        },
+        "manifest": {
+            "name": "Roundcube",
+            "description": "Open source webmail software",
+            "version": "0.8.5",
+            "type": "web",
+            "launch_path": "/",
+            "icons": {
+                "48": "/icon48.png"
+            },
+            "developer": {
+                "name": "Kload",
+                "url": "http://dev.yunohost.org"
+            },
+            "dependencies": {
+                "debian": [
+                    "php5-gd",
+                    "php5-intl",
+                    "php5-mcrypt",
+                    "php5-pspell"
+                ]
+            },
+            "locales": {
+                "fr": {
+                    "description": "Webmail open source"
+                }
+            },
+            "default_locale": "en",
+            "yunohost": {
+                "uid": "roundcube_ynh",
+                "script_path": "/scripts",
+                "multi_instance": "true",
+                "webapp": {
+                    "language": "php",
+                    "db": {
+                        "has_mysql_db": "true",
+                        "mysql_init_script": "/SQL/mysql.initial.sql"
+                    },
+                    "access_control": {
+                        "can_be_public": "yes",
+                        "can_be_protected": "yes"
+                    }
+                }
+            }
+        }
+    }
+}
