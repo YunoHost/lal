@@ -5,4 +5,5 @@ list.json
 .*.swp
 .*.swo
 *~
+.hg/
 public/stylesheets/.sass-cache/*
