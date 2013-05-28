@@ -96,6 +96,26 @@
             </div>
         </script>
 
+        <script id="install-form" type="text/template">
+            <h1>Indicate your YunoHost Admin</h1>
+            <div class="row">
+                <form action="">
+                        <div class="row">
+                            <label class="large-5 columns" for="yuno-url">YunoHost Admin URL</label>
+                            <input class="large-6 columns" type="text" name="yuno-url" id="yuno-url" placeholder="https://my-yunohost.org:6767" required>
+                            <div class="large-1 columns"></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="style: width: 100%;">
+                        <div class="btn-container center">
+                            <input type="submit" class="big green button normal-font strong install-app" style="margin: 20px 0 0" value="Install">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </script>
+
         <script id="template" type="text/template">
             <div class="row">
                 <div class="large-2 columns center">
@@ -105,7 +125,7 @@
                     <h1>{{manifest.name}}</h1>
                 </div>
                 <div class="large-3 columns center" style="padding-top: 10px">
-                    <div class="btn-container"><a class="big green button normal-font strong" href="#">&darr; Install</a></div>
+                    <div class="btn-container"><a class="big green button normal-font strong install-button" href="#">&darr; Install</a></div>
                 </div>
             </div>
             <br />

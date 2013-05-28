@@ -52,11 +52,25 @@ $(document).ready(function () {
             $('#content').html(Mustache.to_html(html, app_list[app_id]));
         });
 
+        /* Install actions */
+        $("#content").on('click', ".install-button", function() {
+            $('#modal').html($('#install-form').html());
+            $('#modal').foundation('reveal', 'open');
+        });
+
+        $("#modal").on('click', ".install-app", function(event) {
+            event.preventDefault();
+            var url =  $("#yuno-url").val();
+            if (url.substr(-1) != '/') url += '/';
+            window.location.href = url + 'app/install/?git-url='+ app_list[app_id].git.url +'&git-branch='+ escape(app_list[app_id].git.branch) +'&git-rev=' + app_list[app_id].git.revision;
+        });
+
         $("#new-request-button").click(function() {
             $('#modal').html($('#new-request').html());
             $('#modal').foundation('reveal', 'open');
         });
 
+        /* New request actions */
         $("#modal").on('click', ".send-request", function(event) {
             event.preventDefault();
             var request = escape($("#modal input[type='radio']:checked").val());
@@ -70,6 +84,7 @@ $(document).ready(function () {
                      + "&body= Repo URL: " + url + "%0D%0A Branch: "+ branch +"%0D%0A Revision: "+ rev +"%0D%0A%0D%0A Comment: %0D%0A"+ comment;
 
             window.location.href = link;
+            console.log('You mail is being sent');
         });
 
 

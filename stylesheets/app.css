@@ -4737,7 +4737,8 @@ body {
 .right-column {
   position: relative;
   margin-left: 300px;
-  padding: 30px; }
+  padding: 30px;
+  overflow: auto; }
 
 #content .app-icon {
   padding-top: 15px; }
