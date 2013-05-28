@@ -1,5 +1,6 @@
 sftp-config.json
-list.json.example
+list.json
+.htpasswd
 .*.swp
 .*.swo
 *~
