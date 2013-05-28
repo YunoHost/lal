@@ -1,6 +1,7 @@
 sftp-config.json
 list.json
 .htpasswd
+.htaccess
 .*.swp
 .*.swo
 *~

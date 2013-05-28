@@ -1,0 +1,7 @@
+<Files admin.php>
+  AuthType Basic
+  AuthName "Private admin"
+  AuthUserFile /var/www/app.yunohost.org/.htpasswd
+  AuthGroupFile /dev/null
+  Require valid-user
+</Files>
