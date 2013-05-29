@@ -37,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
             //echo '<strong>Error:</strong> App already up-to-date on the list (revision unchanged)'; die;
         //}
-        $commit_msg = 'Update '.$app_id;
+        $commit_msg = 'Update ';
         unset($app_array[$app_id]);
     } else {
-        $commit_msg  = 'Add '.$app_id;
+        $commit_msg  = 'Add ';
     }
     $app_array[$app_id] = Array(
         'lastUpdate' => time(),
@@ -59,26 +59,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
 
     echo 'Commit changes... '.str_pad('', 4096); ob_flush(); flush();
-    exec('cd '. dirname(__FILE__) .' && hg commit -m"'. $commit_msg .'" --config ui.username='. $user, $result, $result_code);
+    exec('cd '. dirname(__FILE__) .' && hg commit -m"'. $commit_msg.$app_id .'" --config ui.username='. $user, $result, $result_code);
     if ($result_code) {
         echo 'Error on committing list changes'; die;
     }
-    echo 'OK<br /><br /><strong>Success !</strong> =)<br /><br /><a href="index.html?app='. $app_id .'">&larr; Back to list</a>'; die;
+    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+    echo 'Sending confirmation mail... '.str_pad('', 4096); ob_flush(); flush();
+    $instance_url = 'http://'.$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, -12);
+
+    $to      = 'app-request@yunohost.org, '.$_POST["mail"];
+    $subject = '[YNH '. $commit_msg .' App]'. $app_id .' validated by '. $user;
+    $message = 'The following app has been validated by '. $user ." :\r\n". $instance_url .'?app='. $app_id;
+    $headers = 'From: validators@yunohost.org' . "\r\n" .
+               'Reply-To: app-request@yunohost.org' . "\r\n" .
+               'X-Mailer: PHP/' . phpversion();
+
+    if (!mail($to, $subject, $message, $headers)) {
+        echo '<strong>Error:</strong> Mail sending fail !'; die;
+    }
+
+    echo 'OK<br /><br /><strong>Success !</strong> =)<br /><br /><br /><a href="'. $instance_url .'?app='. $app_id .'">&larr; Back to list</a>'; die;
 }
 
 ?>
 <body>
     <h1>Validate an App</h1>
     <form action="validate.php" method="post" accept-charset="utf-8">
-        <div style="text-align: right; float: left; width: 80px; line-height: 19px; padding-right: 15px;">
+        <div style="text-align: right; float: left; width: 100px; line-height: 20px; padding-right: 10px;">
             <label for="git-url">Repo URL: </label><br /><br />
             <label for="git-branch">Branch: </label><br /><br />
             <label for="git-rev">Revision: </label><br /><br />
+            <label for="mail">Author's Mail: </label><br /><br />
         </div>
         <div style="float: left; width: 400px;">
             <input type="text" name="git-url" id="git-url" placeholder="https://github.com/repo.git" required /><br /><br />
             <input type="text" name="git-branch" id="git-branch" placeholder="master" required /><br /><br />
             <input type="text" name="git-rev" id="git-rev" placeholder="04ff1b3a2281932a937e73064163017b9ec082db" required /><br /><br />
+            <input type="text" name="mail" id="mail" placeholder="john@doe.org" required /><br /><br />
         </div>
         <div style="clear: both;"></div>
         <input style="margin-left: 100px;" type="submit" value="Validate" />
