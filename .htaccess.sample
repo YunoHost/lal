@@ -1,4 +1,4 @@
-<Files admin.php>
+<Files validate.php>
   AuthType Basic
   AuthName "Private admin"
   AuthUserFile /var/www/app.yunohost.org/.htpasswd

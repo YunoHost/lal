@@ -1,3 +1,9 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Validate App</title>
+</head>
 <?php
 
 
@@ -5,27 +11,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     set_time_limit(120);
     //$user= $_SERVER['PHP_AUTH_USER'];
     $user= 'kload';
+    echo 'Get list.json content... '.str_pad('', 4096); ob_flush(); flush();
+    sleep(2);
     $json = file_get_contents(dirname(__FILE__).'/list.json');
     $app_array = json_decode($json, true);
-    $dir = '/tmp/lal'.rand(10,1000);
+    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+    $dir = '/tmp/lal'.rand(10, 1000);
+    echo 'Cloning git repo to fetch manifest... '.str_pad('', 4096); ob_flush(); flush();
     exec('git clone '. $_POST["git-url"] .' -b '. $_POST["git-branch"] .' '. $dir, $result, $result_code);
     if ($result_code) {
-        echo 'Error on fetching git repository (is the URL/Branch right ?)'; die;
+        echo '<strong>Error:</strong> is the URL/Branch right ?'; die;
     }
     exec('cd '. $dir .' && git reset --hard '. $_POST["git-rev"], $result, $result_code);
     if ($result_code) {
-        echo 'Error on finding revision'; die;
+        echo '<strong>Error:</strong> wrong revision'; die;
     }
     $manifest_json = file_get_contents($dir.'/manifest.webapp');
     $manifest_array = json_decode($manifest_json, true);
     system('/bin/rm -rf ' . escapeshellarg($dir));
+    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
 
     $app_id = $manifest_array['yunohost']['uid'];
 
     if (array_key_exists($app_id, $app_array)) {
-        if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
-            echo 'Error: the revision is the same'; die;
-        }
+        //if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
+            //echo '<strong>Error:</strong> App already up-to-date on the list (revision unchanged)'; die;
+        //}
         $commit_msg = 'Update '.$app_id;
         unset($app_array[$app_id]);
     } else {
@@ -40,27 +51,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'revision'  => $_POST["git-rev"]
         )
     );
+
+    echo 'Write list.json changes... '.str_pad('', 4096); ob_flush(); flush();
     $file = fopen(dirname(__FILE__).'/list.json', 'w');
     fwrite($file, json_encode($app_array));
     fclose($file);
+    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+
+    echo 'Commit changes... '.str_pad('', 4096); ob_flush(); flush();
     exec('cd '. dirname(__FILE__) .' && hg commit -m"'. $commit_msg .'" --config ui.username='. $user, $result, $result_code);
     if ($result_code) {
         echo 'Error on committing list changes'; die;
     }
-
-    echo 'Success ! :)'; die;
+    echo 'OK<br /><br /><strong>Success !</strong> =)<br /><br /><a href="index.html?app='. $app_id .'">&larr; Back to list</a>'; die;
 }
 
 ?>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
-    <title>Admin</title>
-</head>
 <body>
     <h1>Validate an App</h1>
-    <form action="admin.php" method="post" accept-charset="utf-8">
+    <form action="validate.php" method="post" accept-charset="utf-8">
         <div style="text-align: right; float: left; width: 80px; line-height: 19px; padding-right: 15px;">
             <label for="git-url">Repo URL: </label><br /><br />
             <label for="git-branch">Branch: </label><br /><br />
