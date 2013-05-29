@@ -4714,22 +4714,15 @@ body {
     margin-top: 5px;
     list-style-type: none; }
     .left-column #app-list li a {
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
       padding: 3px 6px;
       color: white;
       display: block;
       width: 100%;
-      overflow: hidden; }
+      overflow: hidden;
+      font-weight: 700; }
       .left-column #app-list li a:hover, .left-column #app-list li a:focus, .left-column #app-list li a.active {
-        padding: 0 3px;
-        font-weight: 700;
-        cursor: pointer;
-        border: 3px solid white; }
-        .left-column #app-list li a:hover.active, .left-column #app-list li a:focus.active, .left-column #app-list li a.active.active {
-          border: none;
-          padding: 3px 6px; }
+        color: #ffe680;
+        cursor: pointer; }
         .left-column #app-list li a:hover:before, .left-column #app-list li a:focus:before, .left-column #app-list li a.active:before {
           padding: 2px 6px;
           content: "›"; }

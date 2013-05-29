@@ -6,4 +6,4 @@ list.json
 .*.swo
 *~
 .hg/
-public/stylesheets/.sass-cache/*
+stylesheets/.sass-cache/*
