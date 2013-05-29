@@ -8,16 +8,20 @@
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    @ini_set('zlib.output_compression',0);
+    @ini_set('implicit_flush',1);
+    @ob_end_clean();
     set_time_limit(120);
+    ob_implicit_flush(1);
     //$user= $_SERVER['PHP_AUTH_USER'];
     $user= 'kload';
-    echo 'Get list.json content... '.str_pad('', 4096); ob_flush(); flush();
+    echo 'Get list.json content... '.str_pad('', 4096); flush();
     sleep(2);
     $json = file_get_contents(dirname(__FILE__).'/list.json');
     $app_array = json_decode($json, true);
-    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+    echo "OK<br />".str_pad('', 4096); flush();
     $dir = '/tmp/lal'.rand(10, 1000);
-    echo 'Cloning git repo to fetch manifest... '.str_pad('', 4096); ob_flush(); flush();
+    echo 'Cloning git repo to fetch manifest... '.str_pad('', 4096); flush();
     exec('git clone '. $_POST["git-url"] .' -b '. $_POST["git-branch"] .' '. $dir, $result, $result_code);
     if ($result_code) {
         echo '<strong>Error:</strong> is the URL/Branch right ?'; die;
@@ -29,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $manifest_json = file_get_contents($dir.'/manifest.webapp');
     $manifest_array = json_decode($manifest_json, true);
     system('/bin/rm -rf ' . escapeshellarg($dir));
-    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+    echo "OK<br />".str_pad('', 4096); flush();
 
     $app_id = $manifest_array['yunohost']['uid'];
 
@@ -52,23 +56,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         )
     );
 
-    echo 'Write list.json changes... '.str_pad('', 4096); ob_flush(); flush();
+    echo 'Write list.json changes... '.str_pad('', 4096); flush();
     $file = fopen(dirname(__FILE__).'/list.json', 'w');
     fwrite($file, json_encode($app_array));
     fclose($file);
-    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
+    echo "OK<br />".str_pad('', 4096); flush();
 
-    echo 'Commit changes... '.str_pad('', 4096); ob_flush(); flush();
+    echo 'Commit changes... '.str_pad('', 4096); flush();
     exec('cd '. dirname(__FILE__) .' && hg commit -m"'. $commit_msg.$app_id .'" --config ui.username='. $user, $result, $result_code);
     if ($result_code) {
         echo 'Error on committing list changes'; die;
     }
-    echo "OK<br />".str_pad('', 4096); ob_flush(); flush();
-    echo 'Sending confirmation mail... '.str_pad('', 4096); ob_flush(); flush();
+    echo "OK<br />".str_pad('', 4096); flush();
+    echo 'Sending confirmation mail... '.str_pad('', 4096); flush();
     $instance_url = 'http://'.$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, -12);
 
     $to      = 'app-request@yunohost.org, '.$_POST["mail"];
-    $subject = '[YNH '. $commit_msg .' App]'. $app_id .' validated by '. $user;
+    $subject = '[YNH '. $commit_msg .' App] '. $app_id .' validated by '. $user;
     $message = 'The following app has been validated by '. $user ." :\r\n". $instance_url .'?app='. $app_id;
     $headers = 'From: validators@yunohost.org' . "\r\n" .
                'Reply-To: app-request@yunohost.org' . "\r\n" .
