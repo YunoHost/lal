@@ -1,1 +1,1 @@
-list add
+init
