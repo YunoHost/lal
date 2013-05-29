@@ -81,7 +81,7 @@ $(document).ready(function () {
             var comment = escape($('#comment').val());
             var link = "mailto:app-request@yunohost.org"
                      + "?subject=" + "[YNH "+ request +" Request] "+ appname
-                     + "&body= Repo URL: " + url + "%0D%0A Branch: "+ branch +"%0D%0A Revision: "+ rev +"%0D%0A%0D%0A Comment: %0D%0A"+ comment;
+                     + "&body=Repo URL: " + url + "%0D%0A Branch: "+ branch +"%0D%0A Revision: "+ rev +"%0D%0A%0D%0A Comment: %0D%0A"+ comment;
 
             window.location.href = link;
             console.log('You mail is being sent');
