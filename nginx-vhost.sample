@@ -1,0 +1,37 @@
+server {
+    root /var/www/app.yunohost.org/;
+    listen       80;
+    server_name app.yunohost.org;
+    index index.html;
+
+    access_log  /var/log/nginx/app_access.log;
+    error_log /var/log/nginx/app_error.log;
+
+    gzip off;
+    proxy_buffering off;
+
+    server_name_in_redirect off;
+    port_in_redirect off;
+
+    location ~* ^.+\.(jpg|jpeg|gif|css|png|js|ico)$ {
+        access_log        off;
+        expires           30d;
+    }
+
+    location ~ /\. { deny  all; }
+
+    location = /validate.php {
+        auth_basic "Private admin";
+        auth_basic_user_file /var/www/app.yunohost.org/.htpasswd;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index validate.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+    }
+
+    location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
+    }
+}

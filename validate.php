@@ -13,8 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     @ob_end_clean();
     set_time_limit(120);
     ob_implicit_flush(1);
-    //$user= $_SERVER['PHP_AUTH_USER'];
-    $user= 'kload';
+    $user = $_SERVER['PHP_AUTH_USER'];
     echo 'Get list.json content... '.str_pad('', 4096); flush();
     sleep(2);
     $json = file_get_contents(dirname(__FILE__).'/list.json');
@@ -38,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $app_id = $manifest_array['yunohost']['uid'];
 
     if (array_key_exists($app_id, $app_array)) {
-        //if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
-            //echo '<strong>Error:</strong> App already up-to-date on the list (revision unchanged)'; die;
-        //}
+        if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
+            echo '<strong>Error:</strong> App already up-to-date on the list (revision unchanged)'; die;
+        }
         $commit_msg = 'Update ';
         unset($app_array[$app_id]);
     } else {
