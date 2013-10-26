@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result_code) {
         echo '<strong>Error:</strong> wrong revision'; die;
     }
-    $manifest_json = file_get_contents($dir.'/manifest.webapp');
+    $manifest_json = file_get_contents($dir.'/manifest.json');
     $manifest_array = json_decode($manifest_json, true);
     system('/bin/rm -rf ' . escapeshellarg($dir));
     echo "OK<br />".str_pad('', 4096); flush();
 
-    $app_id = $manifest_array['yunohost']['uid'];
+    $app_id = $manifest_array['id'];
 
     if (array_key_exists($app_id, $app_array)) {
         if ($app_array[$app_id]['git']['revision'] == $_POST["git-rev"]) {
