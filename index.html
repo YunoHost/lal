@@ -130,16 +130,10 @@
             </div>
             <br />
             <div>
-                <strong>Name: </strong>{{manifest.name}} ({{manifest.yunohost.uid}})
+                <strong>Name: </strong>{{manifest.name}} ({{manifest.id}})
             </div>
             <div>
-                <strong>Version: </strong>{{manifest.version}}
-            </div>
-            <div>
-                <strong>Type: </strong>{{manifest.type}}
-            </div>
-            <div>
-                <strong>Description: </strong>{{manifest.description}}
+                <strong>Description: </strong>{{manifest.description.en}}
             </div>
             <div class="spacer"></div>
             <div>
@@ -159,16 +153,6 @@
                 <strong>Revision: </strong>{{git.revision}}
             </div>
             <div class="spacer"></div>
-            <strong>Dependencies: </strong> {{^manifest.dependencies}}None{{/manifest.dependencies}}
-            {{#manifest.dependencies}}
-                    <br />Debian :
-                    <ul style="list-style-type: square; padding-left: 20px;">
-                        {{#debian}}
-                            <li>{{.}}</li>
-                        {{/debian}}
-                    </ul>
-                </div>
-            {{/manifest.dependencies}}
         </script>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
